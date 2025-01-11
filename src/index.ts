@@ -1,8 +1,8 @@
 import express from 'express';
 import { graphqlHTTP } from 'express-graphql';
 import cors from 'cors';
-import { schema } from './schema';
 import connectDB from './db/connect';
+import { schema } from './schema/schema';
 
 connectDB();
 const app = express();
