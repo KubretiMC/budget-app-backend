@@ -1,12 +1,11 @@
 import { DataTypes, Model, InferAttributes, InferCreationAttributes } from 'sequelize';
 import { sequelize } from '../db/connect';
-import User from './User';
 
 class Wallet extends Model<
   InferAttributes<Wallet>,
-  InferCreationAttributes<Wallet>
+  InferCreationAttributes<Wallet, { omit: 'id' }>
 > {
-  declare id?: number;
+  declare id: number;
   declare name: string;
   declare balance: number;
   declare userId: number;
