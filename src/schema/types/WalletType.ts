@@ -6,6 +6,7 @@ const WalletType = new GraphQLObjectType({
     id: { type: GraphQLInt },
     name: { type: GraphQLString },
     balance: { type: GraphQLInt },
+    userId: { type: GraphQLInt },
   }),
 });
 

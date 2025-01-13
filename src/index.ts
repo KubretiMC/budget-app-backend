@@ -3,22 +3,24 @@ import { graphqlHTTP } from 'express-graphql';
 import cors from 'cors';
 import connectDB from './db/connect';
 import { schema } from './schema/schema';
+import { defineAssociations } from './models/associations';
 
-connectDB();
 const app = express();
 
-app.use(cors());
-app.use(express.json());
+connectDB().then(() => {
+  defineAssociations();
+  app.use(cors({ origin: 'http://localhost:3000' }));
+  app.use(express.json());
+  app.use(
+    '/graphql',
+    graphqlHTTP({
+      schema,
+      graphiql: true,
+    })
+  );
 
-app.use(
-  '/graphql',
-  graphqlHTTP({
-    schema,
-    graphiql: true,
-  })
-);
-
-const PORT = process.env.PORT || 4000;
-app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}/graphql`);
+  const PORT = process.env.PORT || 4000;
+  app.listen(PORT, () => {
+    console.log(`Server running on http://localhost:${PORT}/graphql`);
+  });
 });

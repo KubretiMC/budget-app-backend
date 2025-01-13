@@ -7,12 +7,14 @@ export const createWallet: GraphQLFieldConfig<any, any, { [argName: string]: any
   args: {
     name: { type: new GraphQLNonNull(GraphQLString) },
     balance: { type: new GraphQLNonNull(GraphQLInt) },
+    userId: { type: new GraphQLNonNull(GraphQLInt) },
   },
   resolve: async (parent, args) => {
     try {
       const wallet = await Wallet.create({
         name: args.name,
         balance: args.balance,
+        userId: args.userId,
       });
       return wallet;
     } catch (error) {

@@ -1,5 +1,6 @@
 import { DataTypes, Model, InferAttributes, InferCreationAttributes } from 'sequelize';
 import { sequelize } from '../db/connect';
+import User from './User';
 
 class Wallet extends Model<
   InferAttributes<Wallet>,
@@ -8,6 +9,7 @@ class Wallet extends Model<
   declare id?: number;
   declare name: string;
   declare balance: number;
+  declare userId: number;
 }
 
 Wallet.init(
@@ -25,18 +27,19 @@ Wallet.init(
       type: DataTypes.INTEGER,
       allowNull: false,
     },
+    userId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: 'Users',
+        key: 'id',
+      },
+    },
   },
   {
     sequelize,
     modelName: 'Wallet',
   }
 );
-
-const syncDB = async () => {
-  await sequelize.sync({ force: false });
-  console.log('Wallet table has been synchronized.');
-};
-
-syncDB();
 
 export default Wallet;
