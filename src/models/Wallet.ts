@@ -3,11 +3,12 @@ import { sequelize } from '../db/connect';
 
 class Wallet extends Model<
   InferAttributes<Wallet>,
-  InferCreationAttributes<Wallet>
+  InferCreationAttributes<Wallet, { omit: 'id' }>
 > {
-  declare id?: number;
+  declare id: number;
   declare name: string;
   declare balance: number;
+  declare userId: number;
 }
 
 Wallet.init(
@@ -25,18 +26,20 @@ Wallet.init(
       type: DataTypes.INTEGER,
       allowNull: false,
     },
+    userId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: 'Users',
+        key: 'id',
+      },
+    },
   },
   {
     sequelize,
     modelName: 'Wallet',
+    timestamps: false,
   }
 );
-
-const syncDB = async () => {
-  await sequelize.sync({ force: false });
-  console.log('Wallet table has been synchronized.');
-};
-
-syncDB();
 
 export default Wallet;
