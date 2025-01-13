@@ -39,6 +39,7 @@ Wallet.init(
   {
     sequelize,
     modelName: 'Wallet',
+    timestamps: false,
   }
 );
 
