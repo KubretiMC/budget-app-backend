@@ -11,7 +11,7 @@ export const RootQuery = new GraphQLObjectType({
         return Wallet.findAll();
       },
     },
-    walletsByUser: {
+    walletsByUserId: {
       type: new GraphQLList(WalletType),
       args: {
         userId: { type: new GraphQLNonNull(GraphQLInt) },
