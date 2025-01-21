@@ -1,3 +1,6 @@
+## [1.2.0] - 2025-01-21
+- creating categories and getting them by user made
+
 ## [1.1.1] - 2024-01-21
 - Renamed `walletsByUser` to `walletsByUserId` in the GraphQL queries
 
