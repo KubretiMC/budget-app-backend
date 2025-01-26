@@ -4,16 +4,12 @@ import Wallet from '../models/Wallet';
 import CategoryType from './types/CategoryType';
 import Category from '../models/Category';
 import { Op } from 'sequelize';
+import TransactionType from './types/TransactionType';
+import Transaction from '../models/Transaction';
 
 export const RootQuery = new GraphQLObjectType({
   name: 'RootQueryType',
   fields: {
-    wallets: {
-      type: new GraphQLList(WalletType),
-      resolve() {
-        return Wallet.findAll();
-      },
-    },
     walletsByUserId: {
       type: new GraphQLList(WalletType),
       args: {
@@ -37,6 +33,15 @@ export const RootQuery = new GraphQLObjectType({
             ],
           },
         });
+      },
+    },
+    transactionsByUserId: {
+      type: new GraphQLList(TransactionType),
+      args: {
+        userId: { type: new GraphQLNonNull(GraphQLInt) },
+      },
+      resolve: async (parent, { userId }) => {
+        return Transaction.findAll({ where: { userId } });
       },
     },
   },
