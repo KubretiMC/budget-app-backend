@@ -1,4 +1,4 @@
-import { GraphQLObjectType, GraphQLList, GraphQLNonNull, GraphQLInt } from 'graphql';
+import { GraphQLObjectType, GraphQLList, GraphQLNonNull, GraphQLInt, GraphQLString } from 'graphql';
 import WalletType from './types/WalletType';
 import Wallet from '../models/Wallet';
 import CategoryType from './types/CategoryType';
@@ -39,9 +39,21 @@ export const RootQuery = new GraphQLObjectType({
       type: new GraphQLList(TransactionType),
       args: {
         userId: { type: new GraphQLNonNull(GraphQLInt) },
+        filterType: { type: GraphQLString },
       },
-      resolve: async (parent, { userId }) => {
-        return Transaction.findAll({ where: { userId } });
+      resolve: async (parent, { userId, filterType }) => {
+        let whereClause: any = { userId };
+      
+        if (filterType === 'expenses') {
+          whereClause.amount = { [Op.lt]: 0 };
+        } else if (filterType === 'incomes') {
+          whereClause.amount = { [Op.gt]: 0 };
+        }
+      
+        return Transaction.findAll({
+          where: whereClause,
+          order: [['date', 'DESC']],
+        });
       },
     },
   },
