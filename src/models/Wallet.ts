@@ -23,7 +23,7 @@ Wallet.init(
       allowNull: false,
     },
     balance: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.FLOAT,
       allowNull: false,
     },
     userId: {
