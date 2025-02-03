@@ -15,8 +15,14 @@ export const RootQuery = new GraphQLObjectType({
       args: {
         userId: { type: new GraphQLNonNull(GraphQLInt) },
       },
-      resolve: async (parent, { userId }) => {
-        return Wallet.findAll({ where: { userId } });
+      resolve: async (parent, args) => {
+        return await Wallet.findAll({
+          where: { 
+            userId: args.userId,
+            deletedAt: null
+          },
+          attributes: ['id', 'name', 'balance', 'userId'],
+        });
       },
     },
     categoriesByUserId: {

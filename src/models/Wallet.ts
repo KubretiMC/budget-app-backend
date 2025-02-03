@@ -9,6 +9,7 @@ class Wallet extends Model<
   declare name: string;
   declare balance: number;
   declare userId: number;
+  declare deletedAt: Date | null;
 }
 
 Wallet.init(
@@ -33,6 +34,11 @@ Wallet.init(
         model: 'Users',
         key: 'id',
       },
+    },
+    deletedAt: {
+      type: DataTypes.DATE,
+      allowNull: true,
+      defaultValue: null,
     },
   },
   {

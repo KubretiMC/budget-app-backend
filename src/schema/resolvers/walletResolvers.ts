@@ -22,3 +22,45 @@ export const createWallet: GraphQLFieldConfig<any, any, { [argName: string]: any
     }
   },
 };
+
+export const updateWallet: GraphQLFieldConfig<any, any, { [argName: string]: any }> = {
+  type: WalletType,
+  args: {
+    id: { type: new GraphQLNonNull(GraphQLInt) },
+    name: { type: GraphQLString },
+    balance: { type: GraphQLFloat },
+  },
+  resolve: async (parent, args) => {
+    try {
+      const wallet = await Wallet.findByPk(args.id);
+      if (!wallet) throw new Error('Wallet not found');
+
+      if (args.name !== undefined) wallet.name = args.name;
+      if (args.balance !== undefined) wallet.balance = args.balance;
+
+      await wallet.save();
+      return wallet;
+    } catch (error) {
+      throw new Error('Error updating wallet');
+    }
+  },
+};
+
+export const deleteWallet: GraphQLFieldConfig<any, any, { [argName: string]: any }> = {
+  type: WalletType,
+  args: {
+    id: { type: new GraphQLNonNull(GraphQLInt) },
+  },
+  resolve: async (parent, args) => {
+    try {
+      const wallet = await Wallet.findByPk(args.id);
+      if (!wallet) throw new Error('Wallet not found');
+
+      wallet.deletedAt = new Date();
+      await wallet.save();
+      return wallet;
+    } catch (error) {
+      throw new Error('Error deleting wallet');
+    }
+  },
+};
