@@ -1,3 +1,6 @@
+## [1.5.0] - 2025-02-12
+- Transaction editing made
+
 ## [1.4.0] - 2025-02-04
 - Wallet deletion made
 
@@ -8,17 +11,17 @@
 - Added ordering of transactions by date
 
 ## [1.3.0] - 2025-01-22
-- creating transactions and getting them by user made
+- Creating transactions and getting them by user made
 
 ## [1.2.0] - 2025-01-21
-- creating categories and getting them by user made
+- Creating categories and getting them by user made
 
 ## [1.1.1] - 2024-01-21
 - Renamed `walletsByUser` to `walletsByUserId` in the GraphQL queries
 
 ## [1.1.0] - 2025-01-13
-- wallet created
-- creating user and getting wallet by user made
+- Wallet created
+- Creating user and getting wallet by user made
 
 ## [1.0.0] - 2025-01-11
 - Initial version

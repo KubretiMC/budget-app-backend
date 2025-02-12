@@ -2,7 +2,7 @@ import { GraphQLObjectType } from 'graphql';
 import { createWallet, deleteWallet, updateWallet } from './resolvers/walletResolvers';
 import { createUser } from './resolvers/userResolvers';
 import { createCategory } from './resolvers/categoryResolvers';
-import { createTransaction } from './resolvers/transactionResolvers';
+import { createTransaction, updateTransaction } from './resolvers/transactionResolvers';
 
 export const Mutation = new GraphQLObjectType({
   name: 'Mutation',
@@ -12,6 +12,7 @@ export const Mutation = new GraphQLObjectType({
     deleteWallet,
     createUser,
     createCategory,
-    createTransaction
+    createTransaction,
+    updateTransaction
   },
 });
