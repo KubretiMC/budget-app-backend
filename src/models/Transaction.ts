@@ -12,6 +12,7 @@ class Transaction extends Model<
   declare categoryId: number;
   declare notes: string;
   declare date: Date;
+  declare deletedAt: Date | null;
 }
 
 Transaction.init(
@@ -56,6 +57,11 @@ Transaction.init(
     date: {
       type: DataTypes.DATE,
       allowNull: false,
+    },
+    deletedAt: {
+      type: DataTypes.DATE,
+      allowNull: true,
+      defaultValue: null,
     },
   },
   {
