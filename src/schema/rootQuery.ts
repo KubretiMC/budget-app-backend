@@ -55,9 +55,11 @@ export const RootQuery = new GraphQLObjectType({
         } else if (filterType === 'incomes') {
           whereClause.amount = { [Op.gt]: 0 };
         }
+        whereClause.deletedAt = null;
       
         return Transaction.findAll({
           where: whereClause,
+          paranoid: true,
           order: [['date', 'DESC']],
         });
       },

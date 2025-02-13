@@ -96,3 +96,35 @@ export const updateTransaction: GraphQLFieldConfig<any, any, { [argName: string]
     }
   },
 };
+
+export const deleteTransaction: GraphQLFieldConfig<any, any, { [argName: string]: any }> = {
+  type: TransactionType,
+  args: {
+    id: { type: new GraphQLNonNull(GraphQLInt) },
+  },
+  resolve: async (_parent, args) => {
+    const { id } = args;
+    const t = await sequelize.transaction();
+    try {
+      const transaction = await Transaction.findByPk(id, { transaction: t });
+      if (!transaction) {
+        throw new Error(`Transaction with ID ${id} not found.`);
+      }
+      const wallet = await Wallet.findByPk(transaction.walletId, { transaction: t });
+      if (!wallet) {
+        throw new Error(`Wallet with ID ${transaction.walletId} not found.`);
+      }
+      await wallet.update(
+        { balance: wallet.balance - transaction.amount },
+        { transaction: t }
+      );
+      transaction.deletedAt = new Date();
+      await transaction.save({ transaction: t });
+      await t.commit();
+      return transaction;
+    } catch (error: any) {
+      await t.rollback();
+      throw new Error(`Error deleting transaction: ${error.message}`);
+    }
+  },
+};
