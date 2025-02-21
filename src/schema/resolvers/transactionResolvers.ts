@@ -9,6 +9,7 @@ import TransactionType from '../types/TransactionType';
 import Transaction from '../../models/Transaction';
 import Wallet from '../../models/Wallet';
 import { sequelize } from '../../db/connect';
+import { authenticateUser } from '../../auth/authenticate';
 
 export const createTransaction: GraphQLFieldConfig<any, any, { [argName: string]: any }> = {
   type: TransactionType,
@@ -20,10 +21,11 @@ export const createTransaction: GraphQLFieldConfig<any, any, { [argName: string]
     notes: { type: GraphQLString },
     date: { type: new GraphQLNonNull(GraphQLString) },
   },
-  resolve: async (parent, args) => {
+  resolve: async (parent, args, context) => {
     const { userId, walletId, amount, categoryId, notes, date } = args;
     const t = await sequelize.transaction();
     try {
+      await authenticateUser(context.request.headers.authorization);
       const wallet = await Wallet.findByPk(walletId, { transaction: t });
       if (!wallet) {
         throw new Error(`Wallet with ID ${walletId} not found.`);
@@ -43,7 +45,7 @@ export const createTransaction: GraphQLFieldConfig<any, any, { [argName: string]
       );
       await t.commit();
       return transaction;
-    } catch (error: any) {
+    } catch (error) {
       await t.rollback();
       throw new Error(`Error creating transaction: ${error.message}`);
     }
@@ -60,10 +62,11 @@ export const updateTransaction: GraphQLFieldConfig<any, any, { [argName: string]
     notes: { type: GraphQLString },
     date: { type: new GraphQLNonNull(GraphQLString) },
   },
-  resolve: async (parent, args) => {
+  resolve: async (parent, args, context) => {
     const { id, walletId, amount, categoryId, notes, date } = args;
     const t = await sequelize.transaction();
     try {
+      await authenticateUser(context.request.headers.authorization);
       const existingTransaction = await Transaction.findByPk(id, { transaction: t });
       if (!existingTransaction) {
         throw new Error(`Transaction with ID ${id} not found.`);
@@ -90,7 +93,7 @@ export const updateTransaction: GraphQLFieldConfig<any, any, { [argName: string]
       );
       await t.commit();
       return updatedTransaction;
-    } catch (error: any) {
+    } catch (error) {
       await t.rollback();
       throw new Error(`Error updating transaction: ${error.message}`);
     }
@@ -102,10 +105,11 @@ export const deleteTransaction: GraphQLFieldConfig<any, any, { [argName: string]
   args: {
     id: { type: new GraphQLNonNull(GraphQLInt) },
   },
-  resolve: async (_parent, args) => {
+  resolve: async (_parent, args, context) => {
     const { id } = args;
     const t = await sequelize.transaction();
     try {
+      await authenticateUser(context.request.headers.authorization);
       const transaction = await Transaction.findByPk(id, { transaction: t });
       if (!transaction) {
         throw new Error(`Transaction with ID ${id} not found.`);
@@ -122,7 +126,7 @@ export const deleteTransaction: GraphQLFieldConfig<any, any, { [argName: string]
       await transaction.save({ transaction: t });
       await t.commit();
       return transaction;
-    } catch (error: any) {
+    } catch (error) {
       await t.rollback();
       throw new Error(`Error deleting transaction: ${error.message}`);
     }

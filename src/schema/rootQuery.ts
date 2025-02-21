@@ -6,6 +6,9 @@ import Category from '../models/Category';
 import { Op } from 'sequelize';
 import TransactionType from './types/TransactionType';
 import Transaction from '../models/Transaction';
+import { authenticateUser } from '../auth/authenticate';
+import UserType from './types/UserType';
+import User from '../models/User';
 
 export const RootQuery = new GraphQLObjectType({
   name: 'RootQueryType',
@@ -15,14 +18,19 @@ export const RootQuery = new GraphQLObjectType({
       args: {
         userId: { type: new GraphQLNonNull(GraphQLInt) },
       },
-      resolve: async (parent, args) => {
-        return await Wallet.findAll({
-          where: { 
-            userId: args.userId,
-            deletedAt: null
-          },
-          attributes: ['id', 'name', 'balance', 'userId'],
-        });
+      resolve: async (parent, args, context) => {
+        try {
+          await authenticateUser(context.request.headers.authorization);
+          return await Wallet.findAll({
+            where: { 
+              userId: args.userId, 
+              deletedAt: null
+            },
+            attributes: ['id', 'name', 'balance', 'userId'],
+          });
+        } catch (error) {
+          throw new Error(error.message);
+        }
       },
     },
     categoriesByUserId: {
@@ -30,15 +38,20 @@ export const RootQuery = new GraphQLObjectType({
       args: {
         userId: { type: new GraphQLNonNull(GraphQLInt) },
       },
-      resolve: async (parent, { userId }) => {
-        return Category.findAll({
-          where: {
-            [Op.or]: [
-              { userId: null },
-              { userId },
-            ],
-          },
-        });
+      resolve: async (parent, { userId }, context) => {
+        try {
+          await authenticateUser(context.request.headers.authorization);
+          return Category.findAll({
+            where: {
+              [Op.or]: [
+                { userId: null },
+                { userId },
+              ],
+            },
+          });
+        } catch (error) {
+          throw new Error(error.message);
+        }
       },
     },
     transactionsByUserId: {
@@ -47,21 +60,42 @@ export const RootQuery = new GraphQLObjectType({
         userId: { type: new GraphQLNonNull(GraphQLInt) },
         filterType: { type: GraphQLString },
       },
-      resolve: async (parent, { userId, filterType }) => {
-        let whereClause: any = { userId };
-      
-        if (filterType === 'expenses') {
-          whereClause.amount = { [Op.lt]: 0 };
-        } else if (filterType === 'incomes') {
-          whereClause.amount = { [Op.gt]: 0 };
+      resolve: async (parent, { userId, filterType }, context) => {
+        try {
+          await authenticateUser(context.request.headers.authorization);
+          let whereClause: any = { userId };
+        
+          if (filterType === 'expenses') {
+            whereClause.amount = { [Op.lt]: 0 };
+          } else if (filterType === 'incomes') {
+            whereClause.amount = { [Op.gt]: 0 };
+          }
+          whereClause.deletedAt = null;
+        
+          return Transaction.findAll({
+            where: whereClause,
+            paranoid: true,
+            order: [['date', 'DESC']],
+          });
+        } catch (error) {
+          throw new Error(error.message);
         }
-        whereClause.deletedAt = null;
-      
-        return Transaction.findAll({
-          where: whereClause,
-          paranoid: true,
-          order: [['date', 'DESC']],
-        });
+      }
+    },
+    getUser: {
+      type: UserType,
+      resolve: async (parent, args, context) => {
+        try {
+          const user = await authenticateUser(context.request.headers.authorization);
+          if (!user) {
+            throw new Error("User not authenticated");
+          }
+          return await User.findByPk(user.id, {
+            attributes: ['id'],
+          });
+        } catch (error) {
+          throw new Error(error.message);
+        }
       },
     },
   },

@@ -1,6 +1,7 @@
 import { GraphQLNonNull, GraphQLString, GraphQLInt, GraphQLFieldConfig, GraphQLFloat } from 'graphql';
 import WalletType from '../types/WalletType';
 import Wallet from '../../models/Wallet';
+import { authenticateUser } from '../../auth/authenticate';
 
 export const createWallet: GraphQLFieldConfig<any, any, { [argName: string]: any }> = {
   type: WalletType,
@@ -9,8 +10,9 @@ export const createWallet: GraphQLFieldConfig<any, any, { [argName: string]: any
     balance: { type: new GraphQLNonNull(GraphQLFloat) },
     userId: { type: new GraphQLNonNull(GraphQLInt) },
   },
-  resolve: async (parent, args) => {
+  resolve: async (parent, args, context) => {
     try {
+      await authenticateUser(context.request.headers.authorization);
       const wallet = await Wallet.create({
         name: args.name,
         balance: args.balance,
@@ -30,8 +32,10 @@ export const updateWallet: GraphQLFieldConfig<any, any, { [argName: string]: any
     name: { type: GraphQLString },
     balance: { type: GraphQLFloat },
   },
-  resolve: async (parent, args) => {
+  resolve: async (parent, args, context) => {
     try {
+      await authenticateUser(context.request.headers.authorization);
+
       const wallet = await Wallet.findByPk(args.id);
       if (!wallet) throw new Error('Wallet not found');
 
@@ -51,8 +55,9 @@ export const deleteWallet: GraphQLFieldConfig<any, any, { [argName: string]: any
   args: {
     id: { type: new GraphQLNonNull(GraphQLInt) },
   },
-  resolve: async (parent, args) => {
+  resolve: async (parent, args, context) => {
     try {
+      await authenticateUser(context.request.headers.authorization);
       const wallet = await Wallet.findByPk(args.id);
       if (!wallet) throw new Error('Wallet not found');
 
