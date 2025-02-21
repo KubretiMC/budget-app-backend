@@ -13,10 +13,11 @@ connectDB().then(() => {
   app.use(express.json());
   app.use(
     '/graphql',
-    graphqlHTTP({
+    graphqlHTTP((req) => ({
       schema,
       graphiql: true,
-    })
+      context: { request: req },
+    }))
   );
 
   const PORT = process.env.PORT || 4000;
