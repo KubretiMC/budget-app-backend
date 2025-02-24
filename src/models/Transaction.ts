@@ -5,11 +5,11 @@ class Transaction extends Model<
   InferAttributes<Transaction>,
   InferCreationAttributes<Transaction, { omit: 'id' }>
 > {
-  declare id: number;
-  declare userId: number;
-  declare walletId: number;
+  declare id: string;
+  declare userId: string;
+  declare walletId: string;
   declare amount: number;
-  declare categoryId: number;
+  declare categoryId: string;
   declare notes: string;
   declare date: Date;
   declare deletedAt: Date | null;
@@ -18,12 +18,12 @@ class Transaction extends Model<
 Transaction.init(
   {
     id: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.UUID,
       primaryKey: true,
-      autoIncrement: true,
+      defaultValue: DataTypes.UUIDV4,
     },
     userId: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.UUID,
       allowNull: false,
       references: {
         model: 'Users',
@@ -31,7 +31,7 @@ Transaction.init(
       },
     },
     walletId: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.UUID,
       allowNull: false,
       references: {
         model: 'Wallets',
@@ -43,7 +43,7 @@ Transaction.init(
       allowNull: false,
     },
     categoryId: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.UUID,
       allowNull: false,
       references: {
         model: 'Categories',

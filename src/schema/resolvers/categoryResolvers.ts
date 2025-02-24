@@ -1,4 +1,4 @@
-import { GraphQLNonNull, GraphQLString, GraphQLInt, GraphQLFieldConfig } from 'graphql';
+import { GraphQLNonNull, GraphQLString, GraphQLFieldConfig } from 'graphql';
 import CategoryType from '../types/CategoryType';
 import Category from '../../models/Category';
 import { authenticateUser } from '../../auth/authenticate';
@@ -7,7 +7,7 @@ export const createCategory: GraphQLFieldConfig<any, any, { [argName: string]: a
   type: CategoryType,
   args: {
     name: { type: new GraphQLNonNull(GraphQLString) },
-    userId: { type: GraphQLInt },
+    userId: { type: GraphQLString },
   },
   resolve: async (parent, args, context) => {
     try {

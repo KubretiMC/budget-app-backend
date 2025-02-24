@@ -1,11 +1,12 @@
 import { DataTypes, Model, InferAttributes, InferCreationAttributes } from 'sequelize';
 import { sequelize } from '../db/connect';
+import { v4 as uuidv4 } from 'uuid'; 
 
 class User extends Model<
   InferAttributes<User>,
   InferCreationAttributes<User, { omit: 'id' }> 
 > {
-  declare id: number;
+  declare id: string;
   declare username: string;
   declare password: string;
   declare email: string;
@@ -14,9 +15,9 @@ class User extends Model<
 User.init(
   {
     id: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.UUID,
       primaryKey: true,
-      autoIncrement: true,
+      defaultValue: DataTypes.UUIDV4,
     },
     username: {
         type: DataTypes.STRING,
