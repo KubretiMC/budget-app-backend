@@ -5,24 +5,24 @@ class Category extends Model<
   InferAttributes<Category>,
   InferCreationAttributes<Category, { omit: 'id' }>
 > {
-  declare id: number;
+  declare id: string;
   declare name: string;
-  declare userId: number | null;
+  declare userId: string | null;
 }
 
 Category.init(
   {
     id: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.UUID,
       primaryKey: true,
-      autoIncrement: true,
+      defaultValue: DataTypes.UUIDV4,
     },
     name: {
       type: DataTypes.STRING,
       allowNull: false,
     },
     userId: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.UUID,
       allowNull: true,
       references: {
         model: 'Users',

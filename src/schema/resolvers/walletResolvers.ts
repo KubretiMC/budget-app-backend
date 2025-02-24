@@ -1,4 +1,4 @@
-import { GraphQLNonNull, GraphQLString, GraphQLInt, GraphQLFieldConfig, GraphQLFloat } from 'graphql';
+import { GraphQLNonNull, GraphQLString, GraphQLFieldConfig, GraphQLFloat } from 'graphql';
 import WalletType from '../types/WalletType';
 import Wallet from '../../models/Wallet';
 import { authenticateUser } from '../../auth/authenticate';
@@ -8,7 +8,7 @@ export const createWallet: GraphQLFieldConfig<any, any, { [argName: string]: any
   args: {
     name: { type: new GraphQLNonNull(GraphQLString) },
     balance: { type: new GraphQLNonNull(GraphQLFloat) },
-    userId: { type: new GraphQLNonNull(GraphQLInt) },
+    userId: { type: new GraphQLNonNull(GraphQLString) },
   },
   resolve: async (parent, args, context) => {
     try {
@@ -28,7 +28,7 @@ export const createWallet: GraphQLFieldConfig<any, any, { [argName: string]: any
 export const updateWallet: GraphQLFieldConfig<any, any, { [argName: string]: any }> = {
   type: WalletType,
   args: {
-    id: { type: new GraphQLNonNull(GraphQLInt) },
+    id: { type: new GraphQLNonNull(GraphQLString) },
     name: { type: GraphQLString },
     balance: { type: GraphQLFloat },
   },
@@ -53,7 +53,7 @@ export const updateWallet: GraphQLFieldConfig<any, any, { [argName: string]: any
 export const deleteWallet: GraphQLFieldConfig<any, any, { [argName: string]: any }> = {
   type: WalletType,
   args: {
-    id: { type: new GraphQLNonNull(GraphQLInt) },
+    id: { type: new GraphQLNonNull(GraphQLString) },
   },
   resolve: async (parent, args, context) => {
     try {

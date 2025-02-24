@@ -1,6 +1,5 @@
 import {
   GraphQLNonNull,
-  GraphQLInt,
   GraphQLFloat,
   GraphQLString,
   GraphQLFieldConfig,
@@ -14,10 +13,10 @@ import { authenticateUser } from '../../auth/authenticate';
 export const createTransaction: GraphQLFieldConfig<any, any, { [argName: string]: any }> = {
   type: TransactionType,
   args: {
-    userId: { type: new GraphQLNonNull(GraphQLInt) },
-    walletId: { type: new GraphQLNonNull(GraphQLInt) },
+    userId: { type: new GraphQLNonNull(GraphQLString) },
+    walletId: { type: new GraphQLNonNull(GraphQLString) },
     amount: { type: new GraphQLNonNull(GraphQLFloat) },
-    categoryId: { type: new GraphQLNonNull(GraphQLInt) },
+    categoryId: { type: new GraphQLNonNull(GraphQLString) },
     notes: { type: GraphQLString },
     date: { type: new GraphQLNonNull(GraphQLString) },
   },
@@ -55,10 +54,10 @@ export const createTransaction: GraphQLFieldConfig<any, any, { [argName: string]
 export const updateTransaction: GraphQLFieldConfig<any, any, { [argName: string]: any }> = {
   type: TransactionType,
   args: {
-    id: { type: new GraphQLNonNull(GraphQLInt) },
-    walletId: { type: new GraphQLNonNull(GraphQLInt) },
+    id: { type: new GraphQLNonNull(GraphQLString) },
+    walletId: { type: new GraphQLNonNull(GraphQLString) },
     amount: { type: new GraphQLNonNull(GraphQLFloat) },
-    categoryId: { type: new GraphQLNonNull(GraphQLInt) },
+    categoryId: { type: new GraphQLNonNull(GraphQLString) },
     notes: { type: GraphQLString },
     date: { type: new GraphQLNonNull(GraphQLString) },
   },
@@ -103,7 +102,7 @@ export const updateTransaction: GraphQLFieldConfig<any, any, { [argName: string]
 export const deleteTransaction: GraphQLFieldConfig<any, any, { [argName: string]: any }> = {
   type: TransactionType,
   args: {
-    id: { type: new GraphQLNonNull(GraphQLInt) },
+    id: { type: new GraphQLNonNull(GraphQLString) },
   },
   resolve: async (_parent, args, context) => {
     const { id } = args;

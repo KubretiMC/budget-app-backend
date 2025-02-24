@@ -4,6 +4,7 @@ import jwt from 'jsonwebtoken';
 import UserType from '../types/UserType';
 import User from '../../models/User';
 import { GraphQLObjectType as GraphQLObj } from 'graphql';
+import Wallet from '../../models/Wallet';
 
 export const createUser: GraphQLFieldConfig<any, any, { [argName: string]: any }> = {
   type: UserType,
@@ -25,6 +26,13 @@ export const createUser: GraphQLFieldConfig<any, any, { [argName: string]: any }
         password: hashedPassword,
         email: args.email,
       });
+
+      await Wallet.create({
+        name: `Wallet 1`,
+        balance: 0,
+        userId: user.id,
+      });
+
       return user;
     } catch (error) {
       throw new Error(`Error registering user:  ${error.message}`);
@@ -60,7 +68,7 @@ export const loginUser: GraphQLFieldConfig<any, any, { [argName: string]: any }>
         throw new Error('Invalid credentials');
       }
 
-      const token = jwt.sign({ id: user.id, email: user.email }, process.env.SECRET_KEY, { expiresIn: '7d' });
+      const token = jwt.sign({ id: user.id, email: user.email }, process.env.SECRET_KEY, { expiresIn: '5m' });
       return { token, user };
     } catch (error) {
       throw new Error(`Error logging in ${error.message}`);

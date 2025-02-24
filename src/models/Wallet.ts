@@ -5,19 +5,19 @@ class Wallet extends Model<
   InferAttributes<Wallet>,
   InferCreationAttributes<Wallet, { omit: 'id' }>
 > {
-  declare id: number;
+  declare id: string;
   declare name: string;
   declare balance: number;
-  declare userId: number;
+  declare userId: string;
   declare deletedAt: Date | null;
 }
 
 Wallet.init(
   {
     id: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.UUID,
       primaryKey: true,
-      autoIncrement: true,
+      defaultValue: DataTypes.UUIDV4,
     },
     name: {
       type: DataTypes.STRING,
@@ -28,7 +28,7 @@ Wallet.init(
       allowNull: false,
     },
     userId: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.UUID,
       allowNull: false,
       references: {
         model: 'Users',

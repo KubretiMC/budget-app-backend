@@ -1,13 +1,13 @@
-import { GraphQLObjectType, GraphQLInt, GraphQLString, GraphQLFloat } from 'graphql';
+import { GraphQLObjectType, GraphQLString, GraphQLFloat } from 'graphql';
 
 const TransactionType = new GraphQLObjectType({
   name: 'Transaction',
   fields: () => ({
-    id: { type: GraphQLInt },
-    userId: { type: GraphQLInt },
-    walletId: { type: GraphQLInt },
+    id: { type: GraphQLString },
+    userId: { type: GraphQLString },
+    walletId: { type: GraphQLString },
     amount: { type: GraphQLFloat },
-    categoryId: { type: GraphQLInt },
+    categoryId: { type: GraphQLString },
     notes: { type: GraphQLString },
     date: { type: GraphQLString },
   }),

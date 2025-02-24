@@ -1,4 +1,4 @@
-import { GraphQLObjectType, GraphQLList, GraphQLNonNull, GraphQLInt, GraphQLString } from 'graphql';
+import { GraphQLObjectType, GraphQLList, GraphQLNonNull, GraphQLString } from 'graphql';
 import WalletType from './types/WalletType';
 import Wallet from '../models/Wallet';
 import CategoryType from './types/CategoryType';
@@ -16,7 +16,7 @@ export const RootQuery = new GraphQLObjectType({
     walletsByUserId: {
       type: new GraphQLList(WalletType),
       args: {
-        userId: { type: new GraphQLNonNull(GraphQLInt) },
+        userId: { type: new GraphQLNonNull(GraphQLString) },
       },
       resolve: async (parent, args, context) => {
         try {
@@ -36,7 +36,7 @@ export const RootQuery = new GraphQLObjectType({
     categoriesByUserId: {
       type: new GraphQLList(CategoryType),
       args: {
-        userId: { type: new GraphQLNonNull(GraphQLInt) },
+        userId: { type: new GraphQLNonNull(GraphQLString) },
       },
       resolve: async (parent, { userId }, context) => {
         try {
@@ -57,7 +57,7 @@ export const RootQuery = new GraphQLObjectType({
     transactionsByUserId: {
       type: new GraphQLList(TransactionType),
       args: {
-        userId: { type: new GraphQLNonNull(GraphQLInt) },
+        userId: { type: new GraphQLNonNull(GraphQLString) },
         filterType: { type: GraphQLString },
       },
       resolve: async (parent, { userId, filterType }, context) => {
