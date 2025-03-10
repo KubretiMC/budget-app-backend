@@ -8,6 +8,7 @@ class Category extends Model<
   declare id: string;
   declare name: string;
   declare userId: string | null;
+  declare deletedAt: Date | null;
 }
 
 Category.init(
@@ -28,6 +29,11 @@ Category.init(
         model: 'Users',
         key: 'id',
       },
+    },
+    deletedAt: {
+      type: DataTypes.DATE,
+      allowNull: true,
+      defaultValue: null,
     },
   },
   {

@@ -3,7 +3,7 @@ import WalletType from './types/WalletType';
 import Wallet from '../models/Wallet';
 import CategoryType from './types/CategoryType';
 import Category from '../models/Category';
-import { Op } from 'sequelize';
+import { Op, Sequelize } from 'sequelize';
 import TransactionType from './types/TransactionType';
 import Transaction from '../models/Transaction';
 import { authenticateUser } from '../auth/authenticate';
@@ -47,7 +47,9 @@ export const RootQuery = new GraphQLObjectType({
                 { userId: null },
                 { userId },
               ],
+              deletedAt: null
             },
+            order: [[Sequelize.literal("userId IS NOT NULL"), "ASC"]],
           });
         } catch (error) {
           throw new Error(error.message);
