@@ -5,8 +5,9 @@ import UserType from '../types/UserType';
 import User from '../../models/User';
 import { GraphQLObjectType as GraphQLObj } from 'graphql';
 import Wallet from '../../models/Wallet';
+import { MyContext } from '../types/MyContext';
 
-export const createUser: GraphQLFieldConfig<any, any, { [argName: string]: any }> = {
+export const createUser: GraphQLFieldConfig<unknown, MyContext, { [argName: string]: any }> = {
   type: UserType,
   args: {
     username: { type: new GraphQLNonNull(GraphQLString) },
@@ -40,7 +41,7 @@ export const createUser: GraphQLFieldConfig<any, any, { [argName: string]: any }
   },
 };
 
-export const loginUser: GraphQLFieldConfig<any, any, { [argName: string]: any }> = {
+export const loginUser: GraphQLFieldConfig<unknown, MyContext, { [argName: string]: any }> = {
   type: new GraphQLObj({
     name: 'AuthPayload',
     fields: () => ({
@@ -68,7 +69,7 @@ export const loginUser: GraphQLFieldConfig<any, any, { [argName: string]: any }>
         throw new Error('Invalid credentials');
       }
 
-      const token = jwt.sign({ id: user.id, email: user.email }, process.env.SECRET_KEY, { expiresIn: '5m' });
+      const token = jwt.sign({ id: user.id, email: user.email }, process.env.SECRET_KEY, { expiresIn: '12h' });
       return { token, user };
     } catch (error) {
       throw new Error(`Error logging in ${error.message}`);
