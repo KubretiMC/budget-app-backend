@@ -2,8 +2,9 @@ import { GraphQLNonNull, GraphQLString, GraphQLFieldConfig } from 'graphql';
 import CategoryType from '../types/CategoryType';
 import Category from '../../models/Category';
 import { authenticateUser } from '../../auth/authenticate';
+import { MyContext } from '../types/MyContext';
 
-export const createCategory: GraphQLFieldConfig<any, any, { [argName: string]: any }> = {
+export const createCategory: GraphQLFieldConfig<unknown, MyContext, { [argName: string]: any }> = {
   type: CategoryType,
   args: {
     name: { type: new GraphQLNonNull(GraphQLString) },
@@ -23,7 +24,7 @@ export const createCategory: GraphQLFieldConfig<any, any, { [argName: string]: a
   },
 };
 
-export const deleteCategory: GraphQLFieldConfig<any, any, { [argName: string]: any }> = {
+export const deleteCategory: GraphQLFieldConfig<unknown, MyContext, { [argName: string]: any }> = {
   type: CategoryType,
   args: {
     id: { type: new GraphQLNonNull(GraphQLString) },

@@ -9,8 +9,9 @@ import Transaction from '../../models/Transaction';
 import Wallet from '../../models/Wallet';
 import { sequelize } from '../../db/connect';
 import { authenticateUser } from '../../auth/authenticate';
+import { MyContext } from '../types/MyContext';
 
-export const createTransaction: GraphQLFieldConfig<any, any, { [argName: string]: any }> = {
+export const createTransaction: GraphQLFieldConfig<unknown, MyContext, { [argName: string]: any }> = {
   type: TransactionType,
   args: {
     userId: { type: new GraphQLNonNull(GraphQLString) },
@@ -51,7 +52,7 @@ export const createTransaction: GraphQLFieldConfig<any, any, { [argName: string]
   },
 };
 
-export const updateTransaction: GraphQLFieldConfig<any, any, { [argName: string]: any }> = {
+export const updateTransaction: GraphQLFieldConfig<unknown, MyContext, { [argName: string]: any }> = {
   type: TransactionType,
   args: {
     id: { type: new GraphQLNonNull(GraphQLString) },
@@ -99,7 +100,7 @@ export const updateTransaction: GraphQLFieldConfig<any, any, { [argName: string]
   },
 };
 
-export const deleteTransaction: GraphQLFieldConfig<any, any, { [argName: string]: any }> = {
+export const deleteTransaction: GraphQLFieldConfig<unknown, MyContext, { [argName: string]: any }> = {
   type: TransactionType,
   args: {
     id: { type: new GraphQLNonNull(GraphQLString) },

@@ -3,7 +3,7 @@ import WalletType from './types/WalletType';
 import Wallet from '../models/Wallet';
 import CategoryType from './types/CategoryType';
 import Category from '../models/Category';
-import { Op, Sequelize } from 'sequelize';
+import { Op, Sequelize, WhereOptions } from 'sequelize';
 import TransactionType from './types/TransactionType';
 import Transaction from '../models/Transaction';
 import { authenticateUser } from '../auth/authenticate';
@@ -65,14 +65,16 @@ export const RootQuery = new GraphQLObjectType({
       resolve: async (parent, { userId, filterType }, context) => {
         try {
           await authenticateUser(context.request.headers.authorization);
-          let whereClause: any = { userId };
+          const whereClause: WhereOptions = {
+            userId,
+            deletedAt: null,
+          };
         
           if (filterType === 'expenses') {
             whereClause.amount = { [Op.lt]: 0 };
           } else if (filterType === 'incomes') {
             whereClause.amount = { [Op.gt]: 0 };
           }
-          whereClause.deletedAt = null;
         
           return Transaction.findAll({
             where: whereClause,

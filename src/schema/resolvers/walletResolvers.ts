@@ -2,8 +2,9 @@ import { GraphQLNonNull, GraphQLString, GraphQLFieldConfig, GraphQLFloat } from 
 import WalletType from '../types/WalletType';
 import Wallet from '../../models/Wallet';
 import { authenticateUser } from '../../auth/authenticate';
+import { MyContext } from '../types/MyContext';
 
-export const createWallet: GraphQLFieldConfig<any, any, { [argName: string]: any }> = {
+export const createWallet: GraphQLFieldConfig<unknown, MyContext, { [argName: string]: any }> = {
   type: WalletType,
   args: {
     name: { type: new GraphQLNonNull(GraphQLString) },
@@ -25,7 +26,7 @@ export const createWallet: GraphQLFieldConfig<any, any, { [argName: string]: any
   },
 };
 
-export const updateWallet: GraphQLFieldConfig<any, any, { [argName: string]: any }> = {
+export const updateWallet: GraphQLFieldConfig<unknown, MyContext, { [argName: string]: any }> = {
   type: WalletType,
   args: {
     id: { type: new GraphQLNonNull(GraphQLString) },
@@ -50,7 +51,7 @@ export const updateWallet: GraphQLFieldConfig<any, any, { [argName: string]: any
   },
 };
 
-export const deleteWallet: GraphQLFieldConfig<any, any, { [argName: string]: any }> = {
+export const deleteWallet: GraphQLFieldConfig<unknown, MyContext, { [argName: string]: any }> = {
   type: WalletType,
   args: {
     id: { type: new GraphQLNonNull(GraphQLString) },
