@@ -4,7 +4,7 @@ import {
   GraphQLString,
   GraphQLFieldConfig,
 } from 'graphql';
-import TransactionType from '../types/TransactionType';
+import { TransactionType } from '../types/TransactionType';
 import Transaction from '../../models/Transaction';
 import Wallet from '../../models/Wallet';
 import { sequelize } from '../../db/connect';

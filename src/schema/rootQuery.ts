@@ -4,7 +4,7 @@ import Wallet from '../models/Wallet';
 import CategoryType from './types/CategoryType';
 import Category from '../models/Category';
 import { Op, Sequelize, WhereOptions } from 'sequelize';
-import TransactionType from './types/TransactionType';
+import { TransactionSummaryType, TransactionType } from './types/TransactionType';
 import Transaction from '../models/Transaction';
 import { authenticateUser } from '../auth/authenticate';
 import UserType from './types/UserType';
@@ -102,5 +102,49 @@ export const RootQuery = new GraphQLObjectType({
         }
       },
     },
-  },
+    transactionsByWallet: {
+      type: new GraphQLList(TransactionSummaryType),
+      args: {
+        userId: { type: new GraphQLNonNull(GraphQLString) },
+        walletId: { type: new GraphQLNonNull(GraphQLString) },
+      },
+      resolve: async (parent, { userId, walletId }, context) => {
+        try {
+          await authenticateUser(context.request.headers.authorization);
+
+          const transactions = await Transaction.findAll({
+            where: {
+              userId,
+              walletId,
+              deletedAt: null,
+            },
+            attributes: [
+              'categoryId',
+              [Sequelize.fn('SUM', Sequelize.col('amount')), 'totalAmount'],
+            ],
+            include: [
+              {
+                model: Category,
+                as: 'category',
+                attributes: ['name'],
+              },
+            ],
+            group: ['Transaction.categoryId', 'category.id'],
+            raw: true,
+          });
+    
+          const result = transactions.map((transaction: any) => ({
+            categoryName: transaction['category.name'],
+            totalAmount: parseFloat(transaction.totalAmount),
+          }));
+    
+          return result;
+    
+        } catch (error) {
+          console.error('Error fetching transactions:', error);
+          throw new Error(error.message);
+        }
+      },
+    }
+  }
 });

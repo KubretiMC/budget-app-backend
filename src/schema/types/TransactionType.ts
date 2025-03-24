@@ -13,4 +13,12 @@ const TransactionType = new GraphQLObjectType({
   }),
 });
 
-export default TransactionType;
+const TransactionSummaryType = new GraphQLObjectType({
+  name: 'TransactionSummary',
+  fields: {
+    categoryName: { type: GraphQLString },
+    totalAmount: { type: GraphQLFloat },
+  },
+});
+
+export { TransactionType, TransactionSummaryType };
