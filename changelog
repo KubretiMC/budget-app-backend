@@ -1,3 +1,6 @@
+## [1.11.0] - 2025-03-19
+- Made filtering of category transactions based on wallet
+
 ## [1.10.0] - 2025-03-19
 - Removed `any` types and replaced them with proper TypeScript typings
 
