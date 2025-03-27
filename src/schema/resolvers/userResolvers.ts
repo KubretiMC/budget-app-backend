@@ -50,7 +50,7 @@ export const loginUser: GraphQLFieldConfig<unknown, MyContext, { [argName: strin
     }),
   }),
   args: {
-    email: { type: new GraphQLNonNull(GraphQLString) },
+    username: { type: new GraphQLNonNull(GraphQLString) },
     password: { type: new GraphQLNonNull(GraphQLString) },
   },
   resolve: async (parent, args) => {
@@ -59,7 +59,7 @@ export const loginUser: GraphQLFieldConfig<unknown, MyContext, { [argName: strin
         throw new Error('Missing SECRET_KEY in environment variables');
       }
 
-      const user = await User.findOne({ where: { email: args.email } });
+      const user = await User.findOne({ where: { username: args.username } });
       if (!user) {
         throw new Error('Invalid credentials');
       }
@@ -69,7 +69,7 @@ export const loginUser: GraphQLFieldConfig<unknown, MyContext, { [argName: strin
         throw new Error('Invalid credentials');
       }
 
-      const token = jwt.sign({ id: user.id, email: user.email }, process.env.SECRET_KEY, { expiresIn: '12h' });
+      const token = jwt.sign({ id: user.id, username: user.username }, process.env.SECRET_KEY, { expiresIn: '12h' });
       return { token, user };
     } catch (error) {
       throw new Error(`Error logging in ${error.message}`);

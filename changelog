@@ -1,5 +1,6 @@
-## [1.11.0] - 2025-03-19
+## [1.11.0] - 2025-03-27
 - Made filtering of category transactions based on wallet
+- Made login to be with username instead of email
 
 ## [1.10.0] - 2025-03-19
 - Removed `any` types and replaced them with proper TypeScript typings
