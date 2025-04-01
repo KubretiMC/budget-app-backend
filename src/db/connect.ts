@@ -9,8 +9,9 @@ export const sequelize = new Sequelize(
   process.env.DB_PASSWORD as string,
   {
     host: process.env.DB_HOST,
+    port: Number(process.env.DB_PORT),
     dialect: process.env.DB_DIALECT as Dialect,
-    logging: true, // TODO: Remove in production
+    logging: false,
   }
 );
 
