@@ -16,18 +16,22 @@ export const createUser: GraphQLFieldConfig<unknown, MyContext, { [argName: stri
   },
   resolve: async (parent, args) => {
     try {
+      console.log('xxxxxxxxxxxxxxxx');
       const existingUser = await User.findOne({ where: { email: args.email } });
+      console.log('xxxxxxxxxxxxxxxx2');
       if (existingUser) {
+        console.log('xxxxxxxxxxxxxxxx3');
         throw new Error('Email already in use');
       }
-      
+      console.log('xxxxxxxxxxxxxxxx4');
       const hashedPassword = await bcrypt.hash(args.password, 10);
+      console.log('xxxxxxxxxxxxxxxx5');
       const user = await User.create({
         username: args.username,
         password: hashedPassword,
         email: args.email,
       });
-
+      console.log('xxxxxxxxxxxxxxxx6');
       await Wallet.create({
         name: `Wallet 1`,
         balance: 0,
@@ -36,6 +40,7 @@ export const createUser: GraphQLFieldConfig<unknown, MyContext, { [argName: stri
 
       return user;
     } catch (error) {
+      console.log('error12312312', error);
       throw new Error(`Error registering user:  ${error.message}`);
     }
   },
