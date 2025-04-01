@@ -22,7 +22,7 @@ connectDB().then(() => {
 
   const PORT = process.env.PORT || 8080;
   app.listen(PORT, () => {
-    console.log('process.env.NODE_ENV2222', process.env.NODE_ENV);
-    console.log(`Server running on http://localhost:${PORT}/graphql`);
+    console.log('process.env.NODE_ENV2222', process.env);
+    console.log(`Server started!`);
   });
 });
