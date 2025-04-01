@@ -1,3 +1,6 @@
+## [1.11.1] - 2025-04-01
+- hotfix
+
 ## [1.11.0] - 2025-03-27
 - Made filtering of category transactions based on wallet
 - Made login to be with username instead of email
