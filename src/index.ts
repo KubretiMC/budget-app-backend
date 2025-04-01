@@ -6,22 +6,23 @@ import { schema } from './schema/schema';
 import { defineAssociations } from './models/associations';
 
 const app = express();
+app.use(cors());
+app.use(express.json());
 
 connectDB().then(() => {
   defineAssociations();
-  app.use(cors({ origin: 'http://localhost:3000' }));
-  app.use(express.json());
   app.use(
     '/graphql',
     graphqlHTTP((req) => ({
       schema,
-      graphiql: true,
+      graphiql: process.env.NODE_ENV !== 'production',
       context: { request: req },
     }))
   );
 
-  const PORT = process.env.PORT || 4000;
+  const PORT = process.env.PORT || 8080;
   app.listen(PORT, () => {
+    console.log('process.env.NODE_ENV2222', process.env.NODE_ENV);
     console.log(`Server running on http://localhost:${PORT}/graphql`);
   });
 });

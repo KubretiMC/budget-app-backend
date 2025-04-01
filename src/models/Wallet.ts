@@ -44,6 +44,7 @@ Wallet.init(
   {
     sequelize,
     modelName: 'Wallet',
+    tableName: 'wallets',
     timestamps: false,
     paranoid: true
   }
