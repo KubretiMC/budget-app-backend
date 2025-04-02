@@ -22,7 +22,6 @@ connectDB().then(() => {
 
   const PORT = process.env.MYSQL_ADDON_PORT || 8080;
   app.listen(PORT, () => {
-    console.log('process.env.NODE_ENV2222', process.env);
     console.log(`Server started!`);
   });
 });

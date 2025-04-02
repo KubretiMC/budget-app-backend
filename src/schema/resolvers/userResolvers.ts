@@ -6,6 +6,7 @@ import User from '../../models/User';
 import { GraphQLObjectType as GraphQLObj } from 'graphql';
 import Wallet from '../../models/Wallet';
 import { MyContext } from '../types/MyContext';
+import { Op } from 'sequelize';
 
 export const createUser: GraphQLFieldConfig<unknown, MyContext, { [argName: string]: any }> = {
   type: UserType,
@@ -16,22 +17,21 @@ export const createUser: GraphQLFieldConfig<unknown, MyContext, { [argName: stri
   },
   resolve: async (parent, args) => {
     try {
-      console.log('xxxxxxxxxxxxxxxx');
-      const existingUser = await User.findOne({ where: { email: args.email } });
-      console.log('xxxxxxxxxxxxxxxx2');
+      const existingUser = await User.findOne({ 
+        where: { 
+          [Op.or]: [{ email: args.email }, { username: args.username }] 
+        } 
+      });
+      
       if (existingUser) {
-        console.log('xxxxxxxxxxxxxxxx3');
-        throw new Error('Email already in use');
-      }
-      console.log('xxxxxxxxxxxxxxxx4');
+        throw new Error('Email or username already in use');
+      }      
       const hashedPassword = await bcrypt.hash(args.password, 10);
-      console.log('xxxxxxxxxxxxxxxx5');
       const user = await User.create({
         username: args.username,
         password: hashedPassword,
         email: args.email,
       });
-      console.log('xxxxxxxxxxxxxxxx6');
       await Wallet.create({
         name: `Wallet 1`,
         balance: 0,
@@ -40,8 +40,7 @@ export const createUser: GraphQLFieldConfig<unknown, MyContext, { [argName: stri
 
       return user;
     } catch (error) {
-      console.log('error12312312', error);
-      throw new Error(`Error registering user:  ${error.message}`);
+      throw new Error(error.message || `Unexpected error occurred.`);
     }
   },
 };
