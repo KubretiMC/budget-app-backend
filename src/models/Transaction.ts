@@ -67,7 +67,7 @@ Transaction.init(
   {
     sequelize,
     modelName: 'Transaction',
-    tableName: 'Transactions',
+    tableName: 'transactions',
     timestamps: true,
   }
 );

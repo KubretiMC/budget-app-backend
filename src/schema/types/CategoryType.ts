@@ -6,6 +6,7 @@ const CategoryType = new GraphQLObjectType({
         id: { type: GraphQLString },
         name: { type: GraphQLString },
         userId: { type: GraphQLString },
+        deletedAt: { type: GraphQLString },
     }),
 });
 
