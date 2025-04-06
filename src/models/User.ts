@@ -1,6 +1,5 @@
 import { DataTypes, Model, InferAttributes, InferCreationAttributes } from 'sequelize';
 import { sequelize } from '../db/connect';
-import { v4 as uuidv4 } from 'uuid'; 
 
 class User extends Model<
   InferAttributes<User>,

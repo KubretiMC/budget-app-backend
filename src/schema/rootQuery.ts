@@ -47,7 +47,6 @@ export const RootQuery = new GraphQLObjectType({
                 { userId: null },
                 { userId },
               ],
-              deletedAt: null
             },
             order: [[Sequelize.literal("userId IS NOT NULL"), "ASC"]],
           });
