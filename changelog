@@ -1,14 +1,17 @@
+## [1.23.1] - 2025-04-15
+- Fixed wallets not returning proper data
+
 ## [1.23.0] - 2025-04-07
-- fixed username not being unique
-- fixed transaction table name
-- fixed not returning deleted categories
-- logs removed
+- Fixed username not being unique
+- Fixed transaction table name
+- Fixed not returning deleted categories
+- Logs removed
 
 ## [1.12.0] - 2025-04-02
-- connected to the deployed database
+- Connected to the deployed database
 
 ## [1.11.1] - 2025-04-01
-- hotfix
+- Hotfix
 
 ## [1.11.0] - 2025-03-27
 - Made filtering of category transactions based on wallet
@@ -18,11 +21,11 @@
 - Removed `any` types and replaced them with proper TypeScript typings
 
 ## [1.9.0] - 2025-02-25
-- ids changed from integers to uuids
+- Ids changed from integers to uuids
 
 ## [1.8.0] - 2025-02-21
-- error handling updated
-- authentication made
+- Error handling updated
+- Authentication made
 
 ## [1.7.0] - 2025-02-18
 - Login and registration made

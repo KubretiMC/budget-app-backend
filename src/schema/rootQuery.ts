@@ -23,10 +23,8 @@ export const RootQuery = new GraphQLObjectType({
           await authenticateUser(context.request.headers.authorization);
           return await Wallet.findAll({
             where: { 
-              userId: args.userId, 
-              deletedAt: null
+              userId: args.userId
             },
-            attributes: ['id', 'name', 'balance', 'userId'],
           });
         } catch (error) {
           throw new Error(error.message);
